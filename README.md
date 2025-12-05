@@ -1,4 +1,4 @@
-# Game Art SaaS Tools
+# Game Art Tools
 
 This repository contains a collection of web-based tools designed for game artists and technical artists.
 
