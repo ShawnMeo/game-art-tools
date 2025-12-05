@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+    min-height: 100vh;
+    color: #fff;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.pro-badge {
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1rem;
+    vertical-align: super;
+    margin-left: 5px;
+}
+
+header p {
+    color: #888;
+    margin-top: 10px;
+}
+
+.controls {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.controls select {
+    background: #2a2a3a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #000;
+    font-size: 0.9rem;
+}
+
+.controls select option {
+    background: #fff;
+    color: #000;
+}
+
+.controls input[type="text"],
+.controls input[type="color"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.controls select:focus,
+.controls input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.controls input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.action-buttons button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#downloadBtn {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: #fff;
+}
+
+#downloadBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+#downloadJpgBtn {
+    background: linear-gradient(90deg, #11998e, #38ef7d);
+    color: #fff;
+}
+
+#downloadJpgBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(56, 239, 125, 0.4);
+}
+
+#clearBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#clearBtn:hover {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: #ff6b6b;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dropzone {
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 60px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+    margin-bottom: 20px;
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.dropzone p {
+    color: #888;
+    font-size: 1.1rem;
+}
+
+.dropzone small {
+    color: #666;
+}
+
+#preview-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: auto;
+    max-height: 70vh;
+}
+
+#sheetCanvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+#file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file-tag {
+    background: rgba(102, 126, 234, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #a8b4ff;
+}
+
+#batch-queue {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#batch-queue h3 {
+    margin-bottom: 15px;
+    color: #667eea;
+}
+
+#processAllBtn {
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+}
