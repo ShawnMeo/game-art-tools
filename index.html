@@ -192,6 +192,81 @@
             font-family: monospace;
         }
 
+        /* NEWSLETTER */
+        .newsletter {
+            background: linear-gradient(135deg, rgba(100, 108, 255, 0.1), rgba(159, 94, 255, 0.1));
+            border: 1px solid rgba(100, 108, 255, 0.3);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .newsletter h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .newsletter p {
+            color: var(--secondary);
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            max-width: 450px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-form input[type="email"] {
+            flex: 1;
+            min-width: 250px;
+            padding: 14px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--primary);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .newsletter-form input[type="email"]::placeholder {
+            color: var(--secondary);
+        }
+
+        .newsletter-form input[type="email"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .newsletter-form button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(100, 108, 255, 0.4);
+        }
+
         /* FOOTER */
         footer {
             margin-top: auto;
@@ -275,6 +350,17 @@
                 <div class="launch-btn" style="opacity: 0.5;">In Development</div>
             </div>
 
+        </section>
+
+        <section class="newsletter">
+            <h2>🚀 Get Early Access</h2>
+            <p>Be the first to know when new tools drop. No spam, just updates on premium features and new releases.</p>
+            <form class="newsletter-form" action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+                <input type="hidden" name="_subject" value="New Game Art Tools Signup!">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
         </section>
     </main>
 
