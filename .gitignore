@@ -4,8 +4,5 @@ node_modules/
 .env
 .vscode/
 
-# Internal docs - not for public deployment
-MONETIZATION_STRATEGY.md
-FREE_VS_PRO_COMPARISON.md
-DEPLOYMENT_GUIDE.md
-SETUP_REPOS.md
+# Local development version - not for GitHub Pages
+game-art-toolkit/

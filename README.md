@@ -1,45 +1,50 @@
 # Game Art Toolkit
 
-A collection of web-based tools designed for game artists and technical artists. All tools are accessible via the main dashboard.
+A collection of web-based tools designed for game artists and technical artists.
 
-## 🚀 Dashboard
-Open [`game-art-toolkit/index.html`](./game-art-toolkit/index.html) in your browser to access all tools.
+## 🚀 Quick Start
+
+### Local Development
+```powershell
+.\run-local.ps1
+```
+Opens dashboard at http://localhost:3000
+
+### Deploy to GitHub Pages
+```powershell
+.\deploy.ps1
+git add -A
+git commit -m "Deploy: update tools"
+git push origin master
+```
+
+---
+
+## 📁 Folder Structure
+
+| Folder | Purpose |
+|--------|---------|
+| `game-art-toolkit/` | Local development (source code) |
+| `game-art-toolkit-remote/` | GitHub Pages (built files) |
 
 ---
 
 ## 🛠️ Tools Included
 
-### ✅ [Asset Naming Validator](./game-art-toolkit/asset-naming-validator/)
-Validates file names against project naming conventions to ensure consistency across your project.
-
-### 📦 [Channel Packer](./game-art-toolkit/channel-packer/)
-Pack different grayscale images into the RGB channels of a single texture for optimized shaders.
-
-### 🔢 [LOD Budget Calculator](./game-art-toolkit/lod-budget-calculator/)
-Calculate and visualize polygon budgets for different Level of Detail (LOD) stages.
-
-### 📐 [Texel Architect](./game-art-toolkit/texel-architect/)
-Plan and calculate texel density for 3D assets to maintain consistent texture resolution.
-
-### 🗺️ [Trim Sheet Planner](./game-art-toolkit/trim-sheet-planner/)
-Plan and lay out trim sheets for optimized modular environment texturing.
-
-### 🖼️ [Material Sheet Generator](./game-art-toolkit/materials-sheet-generator/)
-Generate presentation sheets from your texture maps with customizable layouts.
+| Tool | Description |
+|------|-------------|
+| ✅ Asset Naming Validator | Validate file names against UE naming conventions |
+| 📦 Channel Packer | Pack grayscale masks into RGB channels |
+| 🔢 LOD Budget Calculator | Calculate polygon budgets for LOD stages |
+| 📐 Texel Architect | Plan texel density for 3D assets |
+| 🗺️ Trim Sheet Planner | Layout trim sheets for modular texturing |
+| 🖼️ Material Sheet Generator | Generate texture map presentation sheets |
 
 ---
 
-## 📁 Project Structure
-```
-game-art-toolkit/
-├── index.html                    # Main dashboard
-├── asset-naming-validator/
-├── channel-packer/
-├── lod-budget-calculator/
-├── materials-sheet-generator/
-├── texel-architect/
-└── trim-sheet-planner/
-```
+## 📦 Development Workflow
 
-## Development
-Each tool is contained in its own subdirectory. Most are Vite-based web projects with a `/dist` folder containing the built output.
+1. Make changes in `game-art-toolkit/` (local dev)
+2. Test locally with `.\run-local.ps1`
+3. When ready, run `.\deploy.ps1` to build and sync
+4. Commit and push to deploy to GitHub Pages
