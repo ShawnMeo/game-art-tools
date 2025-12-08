@@ -3,3 +3,6 @@ node_modules/
 
 .env
 .vscode/
+
+# Local development version - not for GitHub Pages
+game-art-toolkit/
