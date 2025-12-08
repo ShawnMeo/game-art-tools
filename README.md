@@ -24,7 +24,6 @@ git push origin master
 
 | Folder | Purpose |
 |--------|---------|
-| `game-art-toolkit/` | Local development (source code) |
 | `game-art-toolkit-remote/` | GitHub Pages (built files) |
 
 ---
