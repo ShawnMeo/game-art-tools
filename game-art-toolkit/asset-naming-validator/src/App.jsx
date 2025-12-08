@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { rules, validateName } from './validator'
+import { rules, validateName, validateBatch } from './validator'
 
 function App() {
+  const [mode, setMode] = useState('single') // 'single' or 'batch'
   const [selectedType, setSelectedType] = useState('staticMesh')
   const [inputName, setInputName] = useState('')
   const [validation, setValidation] = useState({ isValid: true })
+  const [batchInput, setBatchInput] = useState('')
+  const [batchResults, setBatchResults] = useState([])
 
   const currentRule = rules[selectedType]
 
@@ -23,6 +26,40 @@ function App() {
       setInputName(validation.suggestion)
     }
   }
+
+  const handleBatchValidate = () => {
+    if (batchInput.trim() === '') {
+      setBatchResults([])
+      return
+    }
+    const results = validateBatch(batchInput, selectedType)
+    setBatchResults(results)
+  }
+
+  const handleFixAll = () => {
+    const fixedNames = batchResults.map(r =>
+      r.suggestion || r.original
+    ).join('\n')
+    setBatchInput(fixedNames)
+    // Re-validate with fixed names
+    const results = validateBatch(fixedNames, selectedType)
+    setBatchResults(results)
+  }
+
+  const handleCopyFixed = async () => {
+    const fixedNames = batchResults.map(r =>
+      r.suggestion || r.original
+    ).join('\n')
+    try {
+      await navigator.clipboard.writeText(fixedNames)
+      alert('Fixed names copied to clipboard!')
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
+  const validCount = batchResults.filter(r => r.isValid).length
+  const invalidCount = batchResults.filter(r => !r.isValid).length
 
   return (
     <div className="app-container">
@@ -42,6 +79,22 @@ function App() {
       </header>
 
       <main>
+        {/* Mode Tabs */}
+        <div className="mode-tabs">
+          <button
+            className={`mode-tab ${mode === 'single' ? 'active' : ''}`}
+            onClick={() => setMode('single')}
+          >
+            Single
+          </button>
+          <button
+            className={`mode-tab ${mode === 'batch' ? 'active' : ''}`}
+            onClick={() => setMode('batch')}
+          >
+            Batch
+          </button>
+        </div>
+
         <div className="validator-panel">
           <div className="control-group">
             <label>Asset Type</label>
@@ -58,47 +111,117 @@ function App() {
             </div>
           </div>
 
-          <div className="input-group">
-            <label>Asset Name</label>
-            <div className="input-wrapper">
-              <input
-                type="text"
-                value={inputName}
-                onChange={(e) => setInputName(e.target.value)}
-                placeholder={`e.g. ${currentRule.example}`}
-                className={`name-input ${!validation.isValid ? 'invalid' : ''} ${validation.isValid && inputName ? 'valid' : ''}`}
-              />
-              {inputName && (
-                <div className={`status-icon ${validation.isValid ? 'valid' : 'invalid'}`}>
-                  {validation.isValid ? '✓' : '✕'}
+          {/* Single Mode */}
+          {mode === 'single' && (
+            <>
+              <div className="input-group">
+                <label>Asset Name</label>
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    placeholder={`e.g. ${currentRule.example}`}
+                    className={`name-input ${!validation.isValid ? 'invalid' : ''} ${validation.isValid && inputName ? 'valid' : ''}`}
+                  />
+                  {inputName && (
+                    <div className={`status-icon ${validation.isValid ? 'valid' : 'invalid'}`}>
+                      {validation.isValid ? '✓' : '✕'}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
-
-          {!validation.isValid && (
-            <div className="feedback-box error">
-              <div className="error-msg">
-                <strong>Issue:</strong> {validation.error}
               </div>
-              {validation.suggestion && (
-                <div className="suggestion-box">
-                  <span>Did you mean: </span>
-                  <code onClick={handleAutoFix} className="suggestion-code">
-                    {validation.suggestion}
-                  </code>
-                  <button onClick={handleAutoFix} className="fix-btn">
-                    Auto-Fix ✨
-                  </button>
+
+              {!validation.isValid && (
+                <div className="feedback-box error">
+                  <div className="error-msg">
+                    <strong>Issue:</strong> {validation.error}
+                  </div>
+                  {validation.suggestion && (
+                    <div className="suggestion-box">
+                      <span>Did you mean: </span>
+                      <code onClick={handleAutoFix} className="suggestion-code">
+                        {validation.suggestion}
+                      </code>
+                      <button onClick={handleAutoFix} className="fix-btn">
+                        Auto-Fix ✨
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+
+              {validation.isValid && inputName && (
+                <div className="feedback-box success">
+                  <strong>Perfect!</strong> This name follows the {currentRule.label} convention.
+                </div>
+              )}
+            </>
           )}
 
-          {validation.isValid && inputName && (
-            <div className="feedback-box success">
-              <strong>Perfect!</strong> This name follows the {currentRule.label} convention.
-            </div>
+          {/* Batch Mode */}
+          {mode === 'batch' && (
+            <>
+              <div className="input-group">
+                <label>Asset Names (one per line)</label>
+                <textarea
+                  className="batch-input"
+                  value={batchInput}
+                  onChange={(e) => setBatchInput(e.target.value)}
+                  placeholder={`SM_Chair_01\nSM_Table_02\nChair_03`}
+                  rows={8}
+                />
+              </div>
+
+              <div className="batch-actions">
+                <button className="validate-btn" onClick={handleBatchValidate}>
+                  🔍 Validate All
+                </button>
+                {batchResults.length > 0 && (
+                  <>
+                    <button className="fix-all-btn" onClick={handleFixAll}>
+                      ✨ Fix All
+                    </button>
+                    <button className="copy-btn" onClick={handleCopyFixed}>
+                      📋 Copy Fixed Names
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {batchResults.length > 0 && (
+                <div className="batch-results">
+                  <div className="results-summary">
+                    <span className="valid-count">✓ {validCount} valid</span>
+                    <span className="invalid-count">✕ {invalidCount} invalid</span>
+                  </div>
+                  <table className="results-table">
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>Original Name</th>
+                        <th>Issue</th>
+                        <th>Suggested Fix</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {batchResults.map((result, index) => (
+                        <tr key={index} className={result.isValid ? 'valid-row' : 'invalid-row'}>
+                          <td className="status-cell">
+                            {result.isValid ? '✓' : '✕'}
+                          </td>
+                          <td className="name-cell">{result.original}</td>
+                          <td className="issue-cell">{result.error || '—'}</td>
+                          <td className="suggestion-cell">
+                            {result.suggestion || '—'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
           )}
 
           <div className="rules-info">

@@ -91,3 +91,21 @@ export const validateName = (name, typeId) => {
 
     return { isValid: true }
 }
+
+/**
+ * Validate multiple asset names at once
+ * @param {string} input - Newline-separated list of asset names
+ * @param {string} typeId - The asset type to validate against
+ * @returns {Array} Array of validation results with original name and status
+ */
+export const validateBatch = (input, typeId) => {
+    return input
+        .split('\n')
+        .map(name => name.trim())
+        .filter(name => name !== '')
+        .map(name => ({
+            original: name,
+            ...validateName(name, typeId)
+        }))
+}
+
