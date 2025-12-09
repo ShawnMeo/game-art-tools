@@ -1,65 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
-import { rules, validateName, validateBatch } from './validator'
+import { conventions } from './conventions'
 
 function App() {
-  const [mode, setMode] = useState('single') // 'single' or 'batch'
-  const [selectedType, setSelectedType] = useState('staticMesh')
-  const [inputName, setInputName] = useState('')
-  const [validation, setValidation] = useState({ isValid: true })
-  const [batchInput, setBatchInput] = useState('')
-  const [batchResults, setBatchResults] = useState([])
+  const [selectedEngine, setSelectedEngine] = useState('unreal')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [expandedAsset, setExpandedAsset] = useState(null)
 
-  const currentRule = rules[selectedType]
+  const currentConvention = conventions[selectedEngine]
 
-  useEffect(() => {
-    if (inputName.trim() === '') {
-      setValidation({ isValid: true }) // Reset on empty
-      return
-    }
-    const result = validateName(inputName, selectedType)
-    setValidation(result)
-  }, [inputName, selectedType])
+  // Filter assets based on search
+  const filteredAssets = currentConvention.assets.filter(asset =>
+    asset.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    asset.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    asset.prefix?.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
-  const handleAutoFix = () => {
-    if (validation.suggestion) {
-      setInputName(validation.suggestion)
-    }
+  const toggleAssetExpand = (assetId) => {
+    setExpandedAsset(expandedAsset === assetId ? null : assetId)
   }
-
-  const handleBatchValidate = () => {
-    if (batchInput.trim() === '') {
-      setBatchResults([])
-      return
-    }
-    const results = validateBatch(batchInput, selectedType)
-    setBatchResults(results)
-  }
-
-  const handleFixAll = () => {
-    const fixedNames = batchResults.map(r =>
-      r.suggestion || r.original
-    ).join('\n')
-    setBatchInput(fixedNames)
-    // Re-validate with fixed names
-    const results = validateBatch(fixedNames, selectedType)
-    setBatchResults(results)
-  }
-
-  const handleCopyFixed = async () => {
-    const fixedNames = batchResults.map(r =>
-      r.suggestion || r.original
-    ).join('\n')
-    try {
-      await navigator.clipboard.writeText(fixedNames)
-      alert('Fixed names copied to clipboard!')
-    } catch (err) {
-      console.error('Failed to copy:', err)
-    }
-  }
-
-  const validCount = batchResults.filter(r => r.isValid).length
-  const invalidCount = batchResults.filter(r => !r.isValid).length
 
   return (
     <div className="app-container">
@@ -74,172 +33,147 @@ function App() {
       </a>
 
       <header>
-        <h1>Asset Naming Validator</h1>
-        <p>Ensure your Unreal Engine assets follow standard naming conventions.</p>
+        <h1>Asset Naming Conventions</h1>
+        <p>Quick reference guide for game engine asset naming standards</p>
       </header>
 
       <main>
-        {/* Mode Tabs */}
-        <div className="mode-tabs">
+        {/* Engine Selector Tabs */}
+        <div className="engine-tabs">
           <button
-            className={`mode-tab ${mode === 'single' ? 'active' : ''}`}
-            onClick={() => setMode('single')}
+            className={`engine-tab ${selectedEngine === 'unreal' ? 'active' : ''}`}
+            onClick={() => setSelectedEngine('unreal')}
           >
-            Single
+            <span className="engine-icon">🎮</span>
+            Unreal Engine
           </button>
           <button
-            className={`mode-tab ${mode === 'batch' ? 'active' : ''}`}
-            onClick={() => setMode('batch')}
+            className={`engine-tab ${selectedEngine === 'unity' ? 'active' : ''}`}
+            onClick={() => setSelectedEngine('unity')}
           >
-            Batch
+            <span className="engine-icon">🎲</span>
+            Unity
           </button>
         </div>
 
-        <div className="validator-panel">
-          <div className="control-group">
-            <label>Asset Type</label>
-            <div className="type-selector">
-              {Object.values(rules).map(rule => (
-                <button
-                  key={rule.id}
-                  className={`type-btn ${selectedType === rule.id ? 'active' : ''}`}
-                  onClick={() => setSelectedType(rule.id)}
-                >
-                  {rule.label}
-                </button>
-              ))}
+        {/* Format Info */}
+        <div className="format-card">
+          <div className="format-label">Naming Format</div>
+          <div className="format-pattern">{currentConvention.format}</div>
+          <div className="format-description">{currentConvention.formatDescription}</div>
+        </div>
+
+        {/* Search */}
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search asset types..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button className="search-clear" onClick={() => setSearchQuery('')}>✕</button>
+          )}
+        </div>
+
+        {/* Asset Cards Grid */}
+        <div className="asset-grid">
+          {filteredAssets.map(asset => (
+            <div
+              key={asset.id}
+              className={`asset-card ${expandedAsset === asset.id ? 'expanded' : ''}`}
+              onClick={() => toggleAssetExpand(asset.id)}
+            >
+              <div className="asset-header">
+                <span className="asset-icon">{asset.icon}</span>
+                <div className="asset-title">
+                  <h3>{asset.label}</h3>
+                  <code className="asset-prefix">{asset.prefix || 'PascalCase'}</code>
+                </div>
+              </div>
+
+              <p className="asset-description">{asset.description}</p>
+
+              <div className="asset-examples">
+                <span className="examples-label">Examples:</span>
+                <div className="examples-list">
+                  {asset.examples.map((example, i) => (
+                    <code key={i} className="example-code">{example}</code>
+                  ))}
+                </div>
+              </div>
+
+              {asset.suffix && (
+                <div className="asset-suffix">
+                  <span className="suffix-label">Suffix:</span>
+                  <code>{asset.suffix}</code>
+                </div>
+              )}
+
+              {asset.note && (
+                <div className="asset-note">
+                  💡 {asset.note}
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* Single Mode */}
-          {mode === 'single' && (
-            <>
-              <div className="input-group">
-                <label>Asset Name</label>
-                <div className="input-wrapper">
-                  <input
-                    type="text"
-                    value={inputName}
-                    onChange={(e) => setInputName(e.target.value)}
-                    placeholder={`e.g. ${currentRule.example}`}
-                    className={`name-input ${!validation.isValid ? 'invalid' : ''} ${validation.isValid && inputName ? 'valid' : ''}`}
-                  />
-                  {inputName && (
-                    <div className={`status-icon ${validation.isValid ? 'valid' : 'invalid'}`}>
-                      {validation.isValid ? '✓' : '✕'}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {!validation.isValid && (
-                <div className="feedback-box error">
-                  <div className="error-msg">
-                    <strong>Issue:</strong> {validation.error}
-                  </div>
-                  {validation.suggestion && (
-                    <div className="suggestion-box">
-                      <span>Did you mean: </span>
-                      <code onClick={handleAutoFix} className="suggestion-code">
-                        {validation.suggestion}
-                      </code>
-                      <button onClick={handleAutoFix} className="fix-btn">
-                        Auto-Fix ✨
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {validation.isValid && inputName && (
-                <div className="feedback-box success">
-                  <strong>Perfect!</strong> This name follows the {currentRule.label} convention.
-                </div>
-              )}
-            </>
-          )}
-
-          {/* Batch Mode */}
-          {mode === 'batch' && (
-            <>
-              <div className="input-group">
-                <label>Asset Names (one per line)</label>
-                <textarea
-                  className="batch-input"
-                  value={batchInput}
-                  onChange={(e) => setBatchInput(e.target.value)}
-                  placeholder={`SM_Chair_01\nSM_Table_02\nChair_03`}
-                  rows={8}
-                />
-              </div>
-
-              <div className="batch-actions">
-                <button className="validate-btn" onClick={handleBatchValidate}>
-                  🔍 Validate All
-                </button>
-                {batchResults.length > 0 && (
-                  <>
-                    <button className="fix-all-btn" onClick={handleFixAll}>
-                      ✨ Fix All
-                    </button>
-                    <button className="copy-btn" onClick={handleCopyFixed}>
-                      📋 Copy Fixed Names
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {batchResults.length > 0 && (
-                <div className="batch-results">
-                  <div className="results-summary">
-                    <span className="valid-count">✓ {validCount} valid</span>
-                    <span className="invalid-count">✕ {invalidCount} invalid</span>
-                  </div>
-                  <table className="results-table">
-                    <thead>
-                      <tr>
-                        <th>Status</th>
-                        <th>Original Name</th>
-                        <th>Issue</th>
-                        <th>Suggested Fix</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {batchResults.map((result, index) => (
-                        <tr key={index} className={result.isValid ? 'valid-row' : 'invalid-row'}>
-                          <td className="status-cell">
-                            {result.isValid ? '✓' : '✕'}
-                          </td>
-                          <td className="name-cell">{result.original}</td>
-                          <td className="issue-cell">{result.error || '—'}</td>
-                          <td className="suggestion-cell">
-                            {result.suggestion || '—'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </>
-          )}
-
-          <div className="rules-info">
-            <h3>Current Rules</h3>
-            <ul>
-              <li><strong>Prefix:</strong> <code>{currentRule.prefix}</code></li>
-              {currentRule.suffix && (
-                <li>
-                  <strong>Suffix:</strong>{' '}
-                  {Array.isArray(currentRule.suffix)
-                    ? currentRule.suffix.map(s => <code key={s}>{s}</code>)
-                    : <code>{currentRule.suffix}</code>}
-                </li>
-              )}
-              <li><strong>No Spaces</strong></li>
-            </ul>
-          </div>
+          ))}
         </div>
+
+        {filteredAssets.length === 0 && (
+          <div className="no-results">
+            No asset types found matching "{searchQuery}"
+          </div>
+        )}
+
+        {/* Texture Suffixes Section */}
+        <section className="texture-section">
+          <h2>
+            <span className="section-icon">🖼️</span>
+            Texture Map Suffixes
+          </h2>
+          <p className="section-description">
+            Common suffixes used to identify texture map types
+          </p>
+
+          <div className="suffix-grid">
+            {currentConvention.textureSuffixes.map((item, i) => (
+              <div key={i} className="suffix-card">
+                <code className="suffix-code">{item.suffix}</code>
+                <div className="suffix-info">
+                  <span className="suffix-meaning">{item.meaning}</span>
+                  <span className="suffix-desc">{item.description}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Quick Tips */}
+        <section className="tips-section">
+          <h2>
+            <span className="section-icon">💡</span>
+            Best Practices
+          </h2>
+          <ul className="tips-list">
+            <li>
+              <strong>Consistency is key</strong> — Pick a convention and stick to it throughout your project
+            </li>
+            <li>
+              <strong>Use descriptive names</strong> — Avoid vague names like "Asset01" or "NewMaterial"
+            </li>
+            <li>
+              <strong>Include variants</strong> — Use numbers or descriptors for variations (e.g., _01, _Rusty, _Large)
+            </li>
+            <li>
+              <strong>No spaces or special characters</strong> — Use underscores or PascalCase instead
+            </li>
+            <li>
+              <strong>Keep it readable</strong> — Balance between brevity and clarity
+            </li>
+          </ul>
+        </section>
       </main>
 
       <footer>
