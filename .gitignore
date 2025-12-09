@@ -3,3 +3,7 @@ node_modules/
 
 .env
 .vscode/
+
+# Local development files - never push
+game-art-toolkit-local/
+run-local.ps1
