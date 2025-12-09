@@ -24,8 +24,8 @@ git push origin master
 
 | Folder | Purpose |
 |--------|---------|
-| `build/` | GitHub Pages (built files) |
-| `game-art-toolkit-local/` | Local development (gitignored) |
+| `Remote/` | GitHub Pages (built files) |
+| `Local/` | Local development (gitignored) |
 
 ---
 
@@ -44,7 +44,7 @@ git push origin master
 
 ## 📦 Development Workflow
 
-1. Make changes in `game-art-toolkit-local/` (local dev)
+1. Make changes in `Local/` (local dev)
 2. Test locally with `.\run-local.ps1`
-3. When ready, run `.\deploy.ps1` to build and sync to `build/`
+3. When ready, run `.\deploy.ps1` to build and sync to `Remote/`
 4. Commit and push to deploy to GitHub Pages
