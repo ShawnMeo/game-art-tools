@@ -1,14 +1,118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>trim-sheet-planner</title>
-    <script type="module" crossorigin src="./assets/index-BZCtavko.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D8EyAbud.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trim Sheet Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Trim Sheet<br>Planner</h2>
+                <a href="../index.html" class="back-link">← Tools</a>
+            </div>
+
+            <div class="template-group">
+                <h3>Horizontal Strips</h3>
+                <div class="template-list" id="h-templates">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="template-group">
+                <h3>Vertical Strips</h3>
+                <div class="template-list" id="v-templates">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="template-group">
+                <h3>Grids</h3>
+                <div class="template-list" id="grid-templates">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="template-group">
+                <h3>Modular</h3>
+                <div class="template-list" id="modular-templates">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <div class="toolbar">
+                <div class="tool-group">
+                    <label>Resolution</label>
+                    <select id="resolution-select">
+                        <option value="1024">1024 x 1024</option>
+                        <option value="2048" selected>2048 x 2048</option>
+                        <option value="4096">4096 x 4096</option>
+                    </select>
+                </div>
+
+                <div class="tool-group">
+                    <label>Grid Opacity</label>
+                    <input type="range" id="opacity-slider" min="0" max="1" step="0.1" value="1">
+                </div>
+
+                <div class="tool-group check-group" style="margin-right: 20px;">
+                    <input type="checkbox" id="show-uvs" checked>
+                    <label for="show-uvs">Show UVs</label>
+                </div>
+
+                <div class="tool-group">
+                    <label>Snap</label>
+                    <select id="snap-select">
+                        <option value="0">Off</option>
+                        <option value="4">4px</option>
+                        <option value="8">8px</option>
+                        <option value="16" selected>16px</option>
+                        <option value="32">32px</option>
+                        <option value="64">64px</option>
+                    </select>
+                </div>
+
+                <div class="tool-group btn-group" style="margin-left: 20px;">
+                    <button class="btn small" id="split-h-btn" title="Split Horizontal">Split H</button>
+                    <button class="btn small" id="split-v-btn" title="Split Vertical">Split V</button>
+                    <button class="btn small danger" id="delete-btn" title="Delete/Merge">Merge</button>
+                </div>
+
+                <div class="spacer"></div>
+
+                <div class="btn-group">
+                    <button id="export-json-btn" class="btn secondary">Export Data {}</button>
+                    <button id="download-btn" class="btn primary">Download PNG ⬇</button>
+                </div>
+            </div>
+
+            <div class="canvas-wrapper">
+                <canvas id="trim-canvas"></canvas>
+                <div id="uv-tooltip" class="uv-tooltip hidden">
+                    U: <span id="u-val">0.0-1.0</span><br>
+                    V: <span id="v-val">0.0-1.0</span><br>
+                    H: <span id="h-px">2048px</span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
 </html>
