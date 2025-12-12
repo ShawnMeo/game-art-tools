@@ -1,19 +1,32 @@
+/* Material Sheet Generator - Cohesive Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
 :root {
-    --bg-color: #1e1e1e;
-    --text-color: #e0e0e0;
-    --accent-color: #007acc;
-    --dropzone-bg: #2d2d2d;
-    --dropzone-border: #444;
+    --bg-dark: #0a0a0a;
+    --bg-panel: #161616;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.5);
+    --accent-hover: #2563eb;
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --border: #27272a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 20px;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
+    padding: 20px;
+    background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, transparent 60%);
 }
 
 .container {
@@ -21,15 +34,40 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 header {
     text-align: center;
+    padding: 20px 0;
 }
 
-h1 {
-    margin-bottom: 5px;
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(to bottom, #ffffff, #a0a0a0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--text-main);
 }
 
 .controls {
@@ -37,63 +75,115 @@ h1 {
     justify-content: center;
     gap: 20px;
     align-items: center;
-    background: var(--dropzone-bg);
-    padding: 15px;
-    border-radius: 8px;
+    background: var(--bg-panel);
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    flex-wrap: wrap;
 }
 
-select, button {
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+select {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text-main);
     padding: 8px 16px;
-    border-radius: 4px;
-    border: none;
-    font-size: 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
     cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:hover {
+    border-color: var(--accent);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 button {
-    background-color: var(--accent-color);
+    background: var(--accent);
     color: white;
-    font-weight: bold;
-    transition: background 0.2s;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-button:hover {
-    background-color: #005c99;
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--accent-glow);
 }
 
 button:disabled {
-    background-color: #555;
+    background: var(--border);
+    color: var(--text-muted);
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .dropzone {
-    border: 2px dashed var(--dropzone-border);
-    background-color: var(--dropzone-bg);
+    border: 2px dashed var(--border);
+    background-color: var(--bg-panel);
     border-radius: 12px;
-    padding: 40px;
+    padding: 48px;
     text-align: center;
     cursor: pointer;
-    transition: border-color 0.2s, background-color 0.2s;
+    transition: all 0.2s ease;
 }
 
-.dropzone:hover, .dropzone.dragover {
-    border-color: var(--accent-color);
-    background-color: #333;
+.dropzone p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+    border-color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.05);
 }
 
 #preview-container {
-    background: #111;
-    padding: 20px;
-    border-radius: 8px;
+    background: var(--bg-panel);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
     overflow: auto;
     display: flex;
     justify-content: center;
+    /* Checkerboard pattern for transparency */
+    background-image:
+        linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+        linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+        linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-color: #0d0d0d;
 }
 
 canvas {
     max-width: 100%;
     height: auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
 }
 
 #file-list {
@@ -104,9 +194,10 @@ canvas {
 }
 
 .file-tag {
-    background: #333;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    border: 1px solid #444;
+    background: var(--bg-panel);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
 }
