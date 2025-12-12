@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Sheet Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Material Sheet Generator</h1>
+            <p>Drag & drop your textures to generate a presentation sheet.</p>
+        </header>
+
+        <div class="controls">
+            <label>
+                Grid Layout:
+                <select id="gridSelect">
+                    <option value="3x2" selected>3x2 (Standard)</option>
+                    <option value="3x3">3x3 (Large)</option>
+                    <option value="2x2">2x2 (Compact)</option>
+                </select>
+            </label>
+            <label>
+                Resolution:
+                <select id="resolutionSelect">
+                    <option value="native" selected>Native (Auto)</option>
+                    <option value="1080x1080">Instagram Square (1080x1080)</option>
+                    <option value="1080x1350">Instagram Portrait (1080x1350)</option>
+                    <option value="1200x675">Twitter/LinkedIn (1200x675)</option>
+                    <option value="1920x1080">Full HD (1920x1080)</option>
+                    <option value="3840x2160">4K UHD (3840x2160)</option>
+                </select>
+            </label>
+            <button id="downloadBtn" disabled>Download Sheet</button>
+        </div>
+
+        <div id="dropzone" class="dropzone">
+            <p>Drop texture files here<br>or click to select</p>
+            <input type="file" id="fileInput" multiple accept="image/*" hidden>
+        </div>
+
+        <div id="preview-container">
+            <canvas id="sheetCanvas"></canvas>
+        </div>
+
+        <div id="file-list"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

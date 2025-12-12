@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="3D Game Asset Pipeline Automation - Track asset flow and dependencies with interactive diagrams">
+    <title>Pipeline Automation | 3D Asset Tracker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Pipeline Automation</span>
+            </div>
+            <div class="header-actions">
+                <button id="btn-import-folder" class="btn btn-primary">
+                    <span>📁</span>
+                    <span>Import Folder</span>
+                </button>
+                <button id="btn-add-asset" class="btn btn-secondary">
+                    <span>➕</span>
+                    <span>Add Asset</span>
+                </button>
+                <button id="btn-demo" class="btn btn-secondary">
+                    <span>🎮</span>
+                    <span>Demo</span>
+                </button>
+                <button id="btn-clear-all" class="btn btn-secondary">
+                    <span>🗑️</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Left Sidebar - Asset Outliner -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Assets</h2>
+                <span id="asset-count" class="asset-count">0</span>
+            </div>
+            <div class="sidebar-content">
+                <div id="asset-outliner" class="outliner">
+                    <!-- Outliner groups rendered dynamically -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content - Graph -->
+        <main class="main-content">
+            <div class="graph-container">
+                <div id="dependency-graph"></div>
+                <div class="graph-controls">
+                    <button id="btn-fit-view" class="btn btn-secondary btn-icon" title="Fit to View">
+                        <span>🔍</span>
+                    </button>
+                    <button id="btn-center-view" class="btn btn-secondary btn-icon" title="Center View">
+                        <span>🎯</span>
+                    </button>
+                </div>
+            </div>
+            <div class="flow-container">
+                <div id="flow-diagram">
+                    <!-- Flow stages rendered dynamically -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel - Details & History -->
+        <aside class="right-panel">
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h2>Asset Details</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="asset-details">
+                        <div class="empty-state">
+                            <div class="empty-text">Select an asset to see details</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h2>Activity Log</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="history-log">
+                        <div class="log-empty">No history yet</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Add Asset Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add New Asset</h2>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-asset-form">
+                    <div class="form-group">
+                        <label for="asset-name">Asset Name</label>
+                        <input type="text" id="asset-name" placeholder="e.g., Sci-Fi Crate" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="asset-type">Asset Type</label>
+                            <select id="asset-type">
+                                <!-- Options loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset-stage">Starting Stage</label>
+                            <select id="asset-stage">
+                                <!-- Options loaded dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="asset-dependencies">Dependencies (Optional)</label>
+                        <select id="asset-dependencies" multiple>
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="asset-notes">Notes (Optional)</label>
+                        <textarea id="asset-notes" placeholder="Any additional notes about this asset..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="app.hideModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Asset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal (Custom replacement for native confirm()) -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal confirm-modal">
+            <div class="modal-header">
+                <h2 id="confirm-title">Confirm Action</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message" class="confirm-message">Are you sure?</p>
+                <div class="form-actions">
+                    <button id="confirm-cancel" class="btn btn-secondary">Cancel</button>
+                    <button id="confirm-ok" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/pipeline-engine.js"></script>
+    <script src="js/dependency-graph.js"></script>
+    <script src="js/flow-diagram.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

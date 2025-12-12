@@ -5,7 +5,7 @@ node_modules/
 .vscode/
 
 # Local development files - never push
-Local/
+
 run-local.ps1
 promo/
 

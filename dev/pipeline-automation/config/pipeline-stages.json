@@ -1,0 +1,78 @@
+{
+  "name": "3D Game Asset Pipeline",
+  "version": "1.0.0",
+  "stages": [
+    {
+      "id": "concept",
+      "name": "Concept Art",
+      "icon": "🎨",
+      "color": "#9b59b6",
+      "description": "Initial concept sketches and reference gathering"
+    },
+    {
+      "id": "blockout",
+      "name": "Blockout",
+      "icon": "📦",
+      "color": "#3498db",
+      "description": "Basic shapes and proportions"
+    },
+    {
+      "id": "highpoly",
+      "name": "High-Poly",
+      "icon": "💎",
+      "color": "#e74c3c",
+      "description": "Detailed sculpt with all surface detail"
+    },
+    {
+      "id": "lowpoly",
+      "name": "Low-Poly",
+      "icon": "🔷",
+      "color": "#f39c12",
+      "description": "Game-ready topology"
+    },
+    {
+      "id": "uv",
+      "name": "UV Layout",
+      "icon": "🗺️",
+      "color": "#1abc9c",
+      "description": "UV unwrapping and layout optimization"
+    },
+    {
+      "id": "bake",
+      "name": "Baking",
+      "icon": "🔥",
+      "color": "#e67e22",
+      "description": "Normal, AO, and other map baking"
+    },
+    {
+      "id": "texture",
+      "name": "Texturing",
+      "icon": "🖌️",
+      "color": "#2ecc71",
+      "description": "Material and texture painting"
+    },
+    {
+      "id": "export",
+      "name": "Engine Export",
+      "icon": "🚀",
+      "color": "#00d4ff",
+      "description": "Final export to game engine"
+    }
+  ],
+  "transitions": [
+    { "from": "concept", "to": "blockout" },
+    { "from": "blockout", "to": "highpoly" },
+    { "from": "highpoly", "to": "lowpoly" },
+    { "from": "lowpoly", "to": "uv" },
+    { "from": "uv", "to": "bake" },
+    { "from": "bake", "to": "texture" },
+    { "from": "texture", "to": "export" }
+  ],
+  "assetTypes": [
+    { "id": "prop", "name": "Prop", "icon": "🪑" },
+    { "id": "character", "name": "Character", "icon": "🧑" },
+    { "id": "weapon", "name": "Weapon", "icon": "⚔️" },
+    { "id": "vehicle", "name": "Vehicle", "icon": "🚗" },
+    { "id": "environment", "name": "Environment", "icon": "🏔️" }
+  ]
+}

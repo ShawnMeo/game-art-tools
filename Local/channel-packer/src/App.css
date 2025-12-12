@@ -1,0 +1,360 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #fff, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+header p {
+  color: var(--text-muted);
+}
+
+.donation-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ff5e5b;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(255, 94, 91, 0.3);
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.donation-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 94, 91, 0.5);
+}
+
+footer {
+  margin-top: 3rem;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.premium-cta {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.premium-cta h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+.premium-cta p {
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+}
+
+.premium-btn {
+  background: white;
+  color: #667eea;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.premium-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.footer-links {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.mode-switch {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.mode-switch button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+}
+
+.mode-switch button.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.channels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.dropzone {
+  background: var(--bg-panel);
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropzone:hover {
+  border-color: var(--accent);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.dropzone.filled {
+  border-style: solid;
+  border-color: var(--accent);
+}
+
+.channel-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 10;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.channel-label .hint {
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.channel-r .channel-label {
+  color: #ff5555;
+}
+
+.channel-g .channel-label {
+  color: #55ff55;
+}
+
+.channel-b .channel-label {
+  color: #5555ff;
+}
+
+.channel-a .channel-label {
+  color: #ffffff;
+}
+
+.placeholder {
+  font-size: 3rem;
+  color: var(--border);
+  transition: color 0.2s;
+}
+
+.dropzone:hover .placeholder {
+  color: var(--accent);
+}
+
+.preview-thumb {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.preview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 50, 50, 0.8);
+}
+
+.preview-section {
+  background: var(--bg-panel);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preview-container {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.main-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-placeholder {
+  color: var(--text-muted);
+}
+
+.download-btn {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.download-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--accent-glow);
+}
+
+.download-btn:disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* --- Split Mode Styles --- */
+.split-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.main-dropzone {
+  aspect-ratio: 16/9;
+}
+
+.split-results-grid {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.split-result-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.channel-header {
+  font-weight: 700;
+  width: 80px;
+  text-align: right;
+  font-size: 0.8rem;
+}
+
+.result-preview {
+  width: 60px;
+  height: 60px;
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.result-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.empty-state {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.download-mini-btn {
+  margin-left: auto;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+}
+
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
