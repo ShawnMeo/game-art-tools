@@ -201,3 +201,83 @@ canvas {
     border: 1px solid var(--border);
     color: var(--text-muted);
 }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+
+    header h1 {
+        font-size: 1.75rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .controls label {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    select,
+    button {
+        width: 100%;
+    }
+
+    .dropzone {
+        padding: 36px 24px;
+    }
+
+    #preview-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    header {
+        padding: 16px 0;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        gap: 20px;
+    }
+
+    .controls {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .dropzone {
+        padding: 28px 20px;
+    }
+
+    .dropzone p {
+        font-size: 0.9rem;
+    }
+
+    button {
+        padding: 12px 20px;
+    }
+}

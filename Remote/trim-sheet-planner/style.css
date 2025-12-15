@@ -288,3 +288,173 @@ canvas.cell-hover {
     color: var(--accent);
     font-weight: bold;
 }
+
+/* MOBILE MENU TOGGLE */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--accent-hover);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .canvas-wrapper {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        bottom: 0;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .toolbar {
+        padding: 12px 16px;
+        gap: 10px;
+    }
+
+    .tool-group {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .tool-group label {
+        font-size: 0.85rem;
+        min-width: 100%;
+    }
+
+    select {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+
+    .btn {
+        padding: 7px 14px;
+        font-size: 0.85rem;
+    }
+
+    .btn.small {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+    }
+
+    .canvas-wrapper {
+        padding: 16px;
+    }
+
+    .template-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-menu-toggle {
+        top: 12px;
+        left: 12px;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+
+    .sidebar {
+        width: 280px;
+        padding: 20px;
+    }
+
+    .sidebar-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .toolbar {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .tool-group {
+        width: 100%;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    .btn-group {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+    }
+
+    .canvas-wrapper {
+        padding: 12px;
+    }
+
+    canvas {
+        max-width: 100%;
+        max-height: 85%;
+    }
+
+    .template-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .uv-tooltip {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
