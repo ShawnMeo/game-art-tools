@@ -121,12 +121,36 @@ function App() {
 
   }, [channels, mode])
 
+  // --- Mobile-friendly download helper ---
+  const triggerDownload = (dataUrl, filename) => {
+    // Convert data URL to Blob for mobile compatibility
+    const arr = dataUrl.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const bstr = atob(arr[1])
+    let n = bstr.length
+    const u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    const blob = new Blob([u8arr], { type: mime })
+    const blobUrl = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.download = filename
+    link.href = blobUrl
+    // Mobile browsers require the link to be in the DOM
+    document.body.appendChild(link)
+    link.click()
+    // Cleanup
+    setTimeout(() => {
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+    }, 100)
+  }
+
   const downloadTexture = () => {
     if (!previewUrl) return
-    const link = document.createElement('a')
-    link.download = 'packed_texture.png'
-    link.href = previewUrl
-    link.click()
+    triggerDownload(previewUrl, 'packed_texture.png')
   }
 
   // --- Split Mode Logic ---
@@ -186,10 +210,7 @@ function App() {
   }
 
   const downloadChannel = (url, name) => {
-    const link = document.createElement('a')
-    link.download = `${name}_channel.png`
-    link.href = url
-    link.click()
+    triggerDownload(url, `${name}_channel.png`)
   }
 
   return (
