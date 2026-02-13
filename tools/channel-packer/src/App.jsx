@@ -14,6 +14,15 @@ function App() {
   const [previewUrl, setPreviewUrl] = useState(null)
   const canvasRef = useRef(null)
 
+  // File Input refs
+  const packerFileInputs = useRef({
+    r: null,
+    g: null,
+    b: null,
+    a: null
+  })
+  const splitterFileInputRef = useRef(null)
+
   // Split Mode State
   const [splitSource, setSplitSource] = useState(null)
   const [splitChannels, setSplitChannels] = useState({
@@ -28,21 +37,37 @@ function App() {
     e.preventDefault()
   }
 
-  // --- Pack Mode Logic ---
-  const handleDrop = (e, channel) => {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
+  // --- Helper to process file ---
+  const processImageFile = (file, callback) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader()
       reader.onload = (event) => {
         const img = new Image()
         img.onload = () => {
-          setChannels(prev => ({ ...prev, [channel]: img }))
+          callback(img)
         }
         img.src = event.target.result
       }
       reader.readAsDataURL(file)
     }
+  }
+
+  // --- Pack Mode Logic ---
+  const handleDrop = (e, channel) => {
+    e.preventDefault()
+    const file = e.dataTransfer.files[0]
+    processImageFile(file, (img) => {
+      setChannels(prev => ({ ...prev, [channel]: img }))
+    })
+  }
+
+  const handlePackerFileSelect = (e, channel) => {
+    const file = e.target.files[0]
+    processImageFile(file, (img) => {
+      setChannels(prev => ({ ...prev, [channel]: img }))
+    })
+    // Reset value so same file can be selected again
+    e.target.value = ''
   }
 
   useEffect(() => {
@@ -108,18 +133,19 @@ function App() {
   const handleSplitDrop = (e) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const img = new Image()
-        img.onload = () => {
-          setSplitSource(img)
-          processSplit(img)
-        }
-        img.src = event.target.result
-      }
-      reader.readAsDataURL(file)
-    }
+    processImageFile(file, (img) => {
+      setSplitSource(img)
+      processSplit(img)
+    })
+  }
+
+  const handleSplitFileSelect = (e) => {
+    const file = e.target.files[0]
+    processImageFile(file, (img) => {
+      setSplitSource(img)
+      processSplit(img)
+    })
+    e.target.value = ''
   }
 
   const processSplit = (img) => {
@@ -197,7 +223,7 @@ function App() {
         <p>
           {mode === 'pack'
             ? 'Drag & Drop grayscale images to pack them into RGB channels.'
-            : 'Drag & Drop an RGB texture to split it into individual channels.'}
+            : 'Click or Drag & Drop an RGB texture to split it into individual channels.'}
         </p>
       </header>
 
@@ -211,7 +237,17 @@ function App() {
                   className={`dropzone channel-${channel} ${channels[channel] ? 'filled' : ''}`}
                   onDrop={(e) => handleDrop(e, channel)}
                   onDragOver={handleDragOver}
+                  onClick={() => packerFileInputs.current[channel]?.click()}
+                  style={{ cursor: 'pointer' }}
                 >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={el => packerFileInputs.current[channel] = el}
+                    onChange={(e) => handlePackerFileSelect(e, channel)}
+                    onClick={(e) => e.stopPropagation()} // Prevent bubble up
+                  />
                   <div className="channel-label">
                     {channel.toUpperCase()}
                     {channel === 'r' && <span className="hint">(Ambient Occlusion)</span>}
@@ -256,7 +292,17 @@ function App() {
                 className={`dropzone main-dropzone ${splitSource ? 'filled' : ''}`}
                 onDrop={handleSplitDrop}
                 onDragOver={handleDragOver}
+                onClick={() => splitterFileInputRef.current?.click()}
+                style={{ cursor: 'pointer' }}
               >
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={splitterFileInputRef}
+                  onChange={handleSplitFileSelect}
+                  onClick={(e) => e.stopPropagation()}
+                />
                 <div className="channel-label">INPUT TEXTURE (RGB)</div>
                 {splitSource ? (
                   <div className="preview-thumb">
